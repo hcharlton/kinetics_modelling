@@ -1,9 +1,5 @@
 # kinetics_modelling
 
-<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
-    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
-</a>
-
 Retrieval and analysis of PacBio kinetics data from BAM files in the context of observed mutation data.
 
 ## Project Organization
@@ -11,7 +7,8 @@ Retrieval and analysis of PacBio kinetics data from BAM files in the context of 
 ```
 ├── LICENSE            <- Open-source license if one is chosen
 ├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
+├── README.md          <- Read it.
+├── configs            <- INI files for run specific configurations (samples, context parameters, etc)
 ├── data
 │   ├── external       <- Data from third party sources.
 │   ├── interim        <- Intermediate data that has been transformed.
@@ -43,7 +40,7 @@ Retrieval and analysis of PacBio kinetics data from BAM files in the context of 
     │
     ├── __init__.py             <- Makes kinetics_modelling a Python module
     │
-    ├── config.py               <- Store useful variables and configuration
+    ├── config.py               <- General config information (paths, etc) and config loading func
     │
     ├── dataset.py              <- Scripts to download or generate data
     │

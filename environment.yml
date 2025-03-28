@@ -3,12 +3,16 @@ channels:
   - conda-forge
 dependencies:
   - python=3.12.7
-  - pip
   - typer
   - loguru
+  - polars
+  - numpy
+  - scikit-learn
+  - pandas
+  - vegafusion
+  - pyarrow
+  - ipykernel
+  - altair
   - tqdm
   - ruff
-  - pip:
-    - python-dotenv
-    - mkdocs
-    - -e .
+
