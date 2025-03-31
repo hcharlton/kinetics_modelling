@@ -1,18 +1,23 @@
 name: kinetics_modelling
 channels:
   - conda-forge
+  - gwforg
 dependencies:
   - python=3.12.7
-  - typer
-  - loguru
   - polars
   - numpy
   - scikit-learn
-  - pandas
   - vegafusion
-  - pyarrow
   - ipykernel
   - altair
   - tqdm
   - ruff
+  - gwf
+  - pysam
+  - loguru
+  - python-dotenv
+  - line_profiler
+  - pip
+  - pip:
+      - -e .
 
