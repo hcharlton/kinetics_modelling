@@ -8,9 +8,8 @@ from pathlib import Path
 
 from config import load_config, PROCESSED_DATA_DIR, RAW_DATA_DIR
 
-config = load_config('sample_region.ini')
-
-bam_path = Path(config['Paths']['bam_filepath']).expanduser()
+bam_filename = 'ob006_kinetics_diploid.bam'
+run_directory = 'ob006-run0'
 
 
 WINDOW_SIZE: int = 64
@@ -156,9 +155,9 @@ def write_batch(rows, batch_counter: int, output_dir: str) -> None:
     print(f"Batch {batch_counter} written to {output_parquet}")
 @profile
 def main() -> None:
-    bam_filepath = RAW_DATA_DIR / Path('sample_region.bam')
-    # test_contig = "h1tg000001l"
-    output_dir = PROCESSED_DATA_DIR / 'sample_bam_null'
+    bam_filepath = RAW_DATA_DIR / bam_filename
+    test_contig = "h1tg000002l"
+    output_dir = PROCESSED_DATA_DIR / run_directory
     print(output_dir)
     output_dir.mkdir(parents=False, exist_ok=True)
 
@@ -167,7 +166,7 @@ def main() -> None:
     #current_batch: List[pl.DataFrame] = []
     current_batch = []
     with pysam.AlignmentFile(bam_filepath, "rb") as bam:
-        for read in tqdm(bam.fetch(), desc="Processing Reads", unit="read"):
+        for read in tqdm(bam.fetch(test_contig), desc="Processing Reads", unit="read"):
             if read.is_unmapped:
                 continue
             rows = process_read(read)

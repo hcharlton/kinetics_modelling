@@ -4,7 +4,7 @@ import polars as pl
 import altair as alt
 alt.data_transformers.enable("vegafusion")
 
-df = pl.read_parquet(PROCESSED_DATA_DIR / 'sample_bam_null')#.filter(pl.col('center_qual')==[93,93,93])
+df = pl.read_parquet(PROCESSED_DATA_DIR / 'ob006-run0')#.filter(pl.col('center_qual')==[93,93,93])
 
 
 df = df.with_columns(
@@ -25,4 +25,4 @@ chart_fn_variance = alt.Chart(df_passes_group).mark_circle().encode(
     alt.Y('center_qual_1_mean:Q')
 )
 
-chart_fn_variance.save('qualityVar-fn.svg')
+chart_fn_variance.save('./qualityVar-fn.svg')
