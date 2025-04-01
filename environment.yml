@@ -10,6 +10,7 @@ dependencies:
   - vegafusion
   - ipykernel
   - altair
+  - vl-convert-python>=1.6.0
   - tqdm
   - ruff
   - gwf
