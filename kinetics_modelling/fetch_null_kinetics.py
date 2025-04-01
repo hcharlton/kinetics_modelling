@@ -9,7 +9,7 @@ from pathlib import Path
 from config import load_config, PROCESSED_DATA_DIR, RAW_DATA_DIR
 
 bam_filename = 'ob006_kinetics_diploid.bam'
-run_directory = 'ob006-run0'
+run_directory = 'ob006-run1'
 
 
 WINDOW_SIZE: int = 64
@@ -40,6 +40,12 @@ SCHEMA = {
     "center_pw_rev_0": pl.UInt8,
     "center_pw_rev_1": pl.UInt8,
     "center_pw_rev_2": pl.UInt8,
+    "center_sx_0": pl.UInt8,
+    "center_sx_1": pl.UInt8,
+    "center_sx_2": pl.UInt8,
+    "center_sm_0": pl.UInt8,
+    "center_sm_1": pl.UInt8,
+    "center_sm_2": pl.UInt8,
     "window_sm": pl.List(pl.UInt16),
     "window_sx": pl.List(pl.UInt16),
     "window_seq": pl.List(pl.Utf8),
@@ -134,6 +140,12 @@ def process_read(read: pysam.AlignedSegment, window_size: int = WINDOW_SIZE) -> 
             "center_pw_rev_0": tags_rev_pw_tag[center_start],
             "center_pw_rev_1": tags_rev_pw_tag[center_start + 1],
             "center_pw_rev_2": tags_rev_pw_tag[center_start + 2],
+            "center_sx_0": tag_data["sx"][center_start],
+            "center_sx_1": tag_data["sx"][center_start + 1],
+            "center_sx_2": tag_data["sx"][center_start + 2],
+            "center_sm_0": tag_data["sm"][center_start],
+            "center_sm_1": tag_data["sm"][center_start + 1],
+            "center_sm_2": tag_data["sm"][center_start + 2],
             "window_sm": tag_data["sm"][win_start:win_end],
             "window_sx": tag_data["sx"][win_start:win_end],
             "window_seq": window_seq,
