@@ -9,14 +9,14 @@ from pathlib import Path
 from config import load_config, PROCESSED_DATA_DIR, RAW_DATA_DIR
 
 bam_filename = 'ob006_kinetics_diploid.bam'
-run_directory = 'ob006-run1'
+run_directory = 'ob006-run2_full'
 
 
 WINDOW_SIZE: int = 64
 CENTER_OFFSET: int = (WINDOW_SIZE // 2) - 1
 CENTER_SIZE: int = 3
 START_WINDOW: int = 2
-BATCH_SIZE: int = 1000
+BATCH_SIZE: int = 100000
 
 SCHEMA = {
     "contig": pl.Utf8,
@@ -46,14 +46,14 @@ SCHEMA = {
     "center_sm_0": pl.UInt8,
     "center_sm_1": pl.UInt8,
     "center_sm_2": pl.UInt8,
-    "window_sm": pl.List(pl.UInt16),
-    "window_sx": pl.List(pl.UInt16),
-    "window_seq": pl.List(pl.Utf8),
-    "window_qual": pl.List(pl.UInt8),
-    "window_ipd_fwd": pl.List(pl.UInt16),
-    "window_ipd_rev": pl.List(pl.UInt16),
-    "window_pw_fwd": pl.List(pl.UInt8),
-    "window_pw_rev": pl.List(pl.UInt8),
+    # "window_sm": pl.List(pl.UInt16),
+    # "window_sx": pl.List(pl.UInt16),
+    # "window_seq": pl.List(pl.Utf8),
+    # "window_qual": pl.List(pl.UInt8),
+    # "window_ipd_fwd": pl.List(pl.UInt16),
+    # "window_ipd_rev": pl.List(pl.UInt16),
+    # "window_pw_fwd": pl.List(pl.UInt8),
+    # "window_pw_rev": pl.List(pl.UInt8),
 }
 
 @profile
@@ -146,14 +146,14 @@ def process_read(read: pysam.AlignedSegment, window_size: int = WINDOW_SIZE) -> 
             "center_sm_0": tag_data["sm"][center_start],
             "center_sm_1": tag_data["sm"][center_start + 1],
             "center_sm_2": tag_data["sm"][center_start + 2],
-            "window_sm": tag_data["sm"][win_start:win_end],
-            "window_sx": tag_data["sx"][win_start:win_end],
-            "window_seq": window_seq,
-            "window_qual": tag_data["qual"][win_start:win_end],
-            "window_ipd_fwd": tags_fwd_ipd_tag[win_start:win_end],
-            "window_ipd_rev": tags_rev_ipd_tag[win_start:win_end],
-            "window_pw_fwd": tags_fwd_pw_tag[win_start:win_end],
-            "window_pw_rev": tags_rev_pw_tag[win_start:win_end],
+            # "window_sm": tag_data["sm"][win_start:win_end],
+            # "window_sx": tag_data["sx"][win_start:win_end],
+            # "window_seq": window_seq,
+            # "window_qual": tag_data["qual"][win_start:win_end],
+            # "window_ipd_fwd": tags_fwd_ipd_tag[win_start:win_end],
+            # "window_ipd_rev": tags_rev_ipd_tag[win_start:win_end],
+            # "window_pw_fwd": tags_fwd_pw_tag[win_start:win_end],
+            # "window_pw_rev": tags_rev_pw_tag[win_start:win_end],
         }
         rows.append(row) # comment out for testing
     return rows
@@ -168,7 +168,7 @@ def write_batch(rows, batch_counter: int, output_dir: str) -> None:
 @profile
 def main() -> None:
     bam_filepath = RAW_DATA_DIR / bam_filename
-    test_contig = "h1tg000002l"
+    # test_contig = "h1tg000002l"
     output_dir = PROCESSED_DATA_DIR / run_directory
     print(output_dir)
     output_dir.mkdir(parents=False, exist_ok=True)
@@ -178,7 +178,7 @@ def main() -> None:
     #current_batch: List[pl.DataFrame] = []
     current_batch = []
     with pysam.AlignmentFile(bam_filepath, "rb") as bam:
-        for read in tqdm(bam.fetch(test_contig), desc="Processing Reads", unit="read"):
+        for read in tqdm(bam.fetch(), desc="Processing Reads", unit="read"):
             if read.is_unmapped:
                 continue
             rows = process_read(read)
