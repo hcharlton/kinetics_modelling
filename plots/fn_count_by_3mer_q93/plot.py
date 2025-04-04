@@ -3,6 +3,7 @@ import polars as pl
 import altair as alt
 alt.data_transformers.enable("vegafusion")
 
+
 q = (
     pl.scan_parquet(PROCESSED_DATA_DIR / 'ob006-run2_full')
     .select(
@@ -10,7 +11,7 @@ q = (
         'center_seq', 
         'fn', 
     )
-    .filter(pl.col('fn')>14)
+    .filter((pl.col('fn')>14) & (pl.col('center_qual').list.get(1) == 93))
     .group_by(['center_seq', 'fn'])
     .agg(pl.len().alias('count'))
 )

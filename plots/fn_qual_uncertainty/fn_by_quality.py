@@ -6,7 +6,7 @@ alt.data_transformers.enable("vegafusion")
 
 
 q = (
-    pl.scan_parquet(PROCESSED_DATA_DIR / 'ob006-run0')
+    pl.scan_parquet(PROCESSED_DATA_DIR / 'ob006-run2_full')
     .select('center_qual', 'fn')
     .with_columns(
         (pl.col('center_qual').list[0].alias('center_qual_0')),
@@ -16,11 +16,10 @@ q = (
     .agg(pl.col('center_qual_1').var().alias('center_qual_1_var'),
          pl.col('center_qual_1').mean().alias('center_qual_1_mean'),
          (pl.col('center_qual_1').var().sqrt() / pl.col('center_qual_1').count().sqrt()).alias('se'))
-    .unpivot(index = 'fn')
     )
 
 df = q.collect()
-
+print(df.head)
 dynamics_chart = alt.Chart(df).mark_circle().encode(
     alt.X('fn:Q').title('Passes'),
     alt.Y('center_qual_1_mean:Q').title('Quality at Locus'),
