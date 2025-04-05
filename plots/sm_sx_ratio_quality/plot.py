@@ -6,7 +6,7 @@ alt.data_transformers.enable("vegafusion")
 
 q = (
     pl.scan_parquet(PROCESSED_DATA_DIR / 'ob006-run2_full')
-    .head(100000)
+    .head(10000000)
     .select(
         'center_sm_1',
         'center_sx_1',
