@@ -49,6 +49,6 @@ kinetics_chart = alt.Chart(df).mark_line().encode(
 
 )
 
-kinetics_chart.save('./fn-ipd_var_3mer_facet.svg')
+kinetics_chart.save('./kinetics_mean_sd_by_passes_q93_facet.svg')
 
 

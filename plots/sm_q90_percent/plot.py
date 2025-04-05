@@ -14,27 +14,26 @@ q = (
         'center_qual'
     )
     .with_columns(
-        (pl.col('center_sm_1')/(pl.col('center_sx_1')+pl.col('center_sm_1'))).alias('sm_ratio'),
-        (pl.col('center_qual').list.get(1)).alias('center_qual_1')
+        (pl.col('center_qual').list.get(1)).alias('center_qual_1'),
+        (pl.col('center_sm_1').round(2)).alias('sm_bin')
     )
-    .with_columns(
-        pl.col('sm_ratio').round(1).alias('sm_ratio_bin')
-    )
-    .group_by('sm_ratio_bin')
+    .group_by('sm_bin')
     .agg(((pl.col('center_qual_1') >= 90).sum()/pl.col('center_qual_1').len()).alias('percentGEQ90'))
 )
 
 
+
 df = q.collect()
+
 print(df.head())
 
 chart = alt.Chart(df).mark_line(opacity=0.5).encode(
-    alt.X('sm_ratio_bin:Q'),
+    alt.X('sm_bin:Q'),
     alt.Y('percentGEQ90:Q')
 ).properties(
     width=500,
     height=500,
-    title='percentGEQ90 ~ Bin(SM/(SM+SX))'
+    title='percentGEQ90 ~ SM)'
 )
 
-chart.save('./sm_sx_ratio_quality.svg')
+chart.save('./sm_q90_percent.svg')
